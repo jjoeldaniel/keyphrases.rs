@@ -1,7 +1,7 @@
-pub mod map_words {
+pub mod mapwords {
 
+    use std::collections::HashMap;
     use std::collections::HashSet;
-    use std::{collections::HashMap, fs};
 
     pub struct MapwordsFile {
         str: String,
@@ -12,10 +12,10 @@ pub mod map_words {
 
     impl MapwordsFile {
         /// MapwordsString constructor
-        pub fn new(str: String, stop_words: HashSet<String>, top_n: u8) -> MapwordsFile {
+        pub fn new(str: String, top_n: u8) -> MapwordsFile {
             MapwordsFile {
                 str,
-                stop_words,
+                stop_words: HashSet::new(),
                 map: HashMap::new(),
                 top_n,
             }
@@ -23,6 +23,7 @@ pub mod map_words {
 
         /// Collects keywords from passed in file path
         pub fn get_keywords(&mut self) {
+            self.load_stopwords();
             for k in self.str.split_whitespace() {
                 // Check if key is a stopword
                 //
@@ -52,19 +53,14 @@ pub mod map_words {
                 i += 1;
             }
         }
-    }
 
-    /// Reads a .txt file and returns a HashSet of all strings
-    pub fn txt_to_set(file_path: String) -> HashSet<String> {
-        let content = fs::read_to_string(file_path)
-            .expect("Failed to read file path, maybe the file doesn't exist?");
+        /// Loads stopwords
+        fn load_stopwords(&mut self) {
+            let stopwords: &str = include_str!("stopwords.txt");
 
-        let mut set: HashSet<String> = HashSet::new();
-
-        for line in content.lines() {
-            set.insert(String::from(line));
+            for line in stopwords.lines() {
+                self.stop_words.insert(String::from(line));
+            }
         }
-
-        return set;
     }
 }
