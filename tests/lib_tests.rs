@@ -1,6 +1,6 @@
 mod tests {
 
-    fn compare_vectors(vec1: Vec<(&u16, &String)>, vec2: Vec<(&u16, &String)>) -> bool {
+    fn compare_vectors(vec1: Vec<(u16, String)>, vec2: Vec<(u16, String)>) -> bool {
         if vec1.len() != vec2.len() {
             return false;
         }
@@ -22,17 +22,17 @@ mod tests {
         map.collect_keywords();
 
         // expected values
-        let mut test_vec: Vec<(&u16, &String)> = Vec::new();
+        let mut test_vec: Vec<(u16, String)> = Vec::new();
         let str1: String = String::from("judgement");
         let str2: String = String::from("might");
         let str3: String = String::from("man");
         let str4: String = String::from("willing");
         let str5: String = String::from("self-esteem.");
-        test_vec.push((&5, &str1));
-        test_vec.push((&2, &str2));
-        test_vec.push((&2, &str3));
-        test_vec.push((&1, &str4));
-        test_vec.push((&1, &str5));
+        test_vec.push((5, str1));
+        test_vec.push((2, str2));
+        test_vec.push((2, str3));
+        test_vec.push((1, str4));
+        test_vec.push((1, str5));
 
         // compare vector equality
         assert!(compare_vectors(map.get_keywords(), test_vec));
