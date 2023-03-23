@@ -47,12 +47,8 @@ impl MapWordsString {
         }
     }
 
-    pub fn get_keywords(&self) -> HashMap<String, u16> {
-        return self.map.clone();
-    }
-
-    /// Prints top_n keywords
-    pub fn print_keywords(&self) {
+    /// Returns a copy of sorted keywords
+    pub fn get_keywords(&self) -> Vec<(&u16, &String)> {
         let mut sorted_vector: Vec<(&u16, &String)> = Vec::new();
         for (k, v) in self.map.iter() {
             sorted_vector.push((v, k));
@@ -60,15 +56,27 @@ impl MapWordsString {
 
         sorted_vector.sort_by(|a, b| b.cmp(a));
 
+        let mut sized_vector: Vec<(&u16, &String)> = Vec::new();
         let mut i: u8 = 0;
         for tup in sorted_vector {
             if i == self.top_n {
-                return;
+                break;
             }
 
-            println!("{} : {}", tup.1, tup.0);
+            sized_vector.push((tup.0, tup.1));
 
             i += 1;
+        }
+
+        return sized_vector;
+    }
+
+    /// Prints top_n keywords
+    pub fn print_keywords(&self) {
+        let sorted_vector = self.get_keywords();
+
+        for tup in sorted_vector {
+            println!("{} : {}", tup.0, tup.1);
         }
     }
 
