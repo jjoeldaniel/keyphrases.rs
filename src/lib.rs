@@ -25,7 +25,7 @@ impl MapWordsString {
     }
 
     /// Collects keywords from str
-    pub fn collect_keywords(&mut self) {
+    fn collect_keywords(&mut self) {
         self.load_stopwords();
         let re = Regex::new("(\\w+)").unwrap();
 
