@@ -4,3 +4,4 @@
 # The library shouldn't decide about the exact versions of 
 # its dependencies, but let the downstream crate decide.
 Cargo.lock
+*.rlib
