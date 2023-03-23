@@ -20,7 +20,7 @@ use mapwords::MapWordsString;
 use mapwords::MapWordsFile;
 ```
 
-Then, create a new instance of the either struct by calling the new function with either a string or file path and a number representing the number of top keywords to return:
+Then, create a new instance of either struct by calling the new function with either a string or file path and a number representing the number of top keywords to return:
 
 ```rust
 let mut map_words = MapWordsString::new("This is a test string".to_string(), 2);
