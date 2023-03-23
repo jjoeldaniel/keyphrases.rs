@@ -8,7 +8,7 @@ To use mapwords.rs in your Rust project, add the following line to your Cargo.to
 
 ```toml
 [dependencies]
-mapwords = "0.1.0"
+mapwords = "0.1.2"
 ```
 
 ## Usage
