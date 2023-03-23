@@ -8,7 +8,7 @@ To use mapwords.rs in your Rust project, add the following line to your Cargo.to
 
 ```toml
 [dependencies]
-mapwords = "0.1.2"
+mapwords = "0.1.3"
 ```
 
 ## Usage
@@ -24,12 +24,6 @@ Then, create a new instance of either struct by calling the new function with ei
 
 ```rust
 let mut map_words = MapWordsString::new("This is a test string".to_string(), 2);
-```
-
-To collect the keywords from the string, call the `collect_keywords()` function:
-
-```rust
-map_words.collect_keywords();
 ```
 
 You can then get the keywords by calling the `get_keywords()` function.
