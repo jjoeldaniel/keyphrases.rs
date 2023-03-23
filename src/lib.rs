@@ -23,7 +23,7 @@ impl MapWordsString {
         }
     }
 
-    /// Collects keywords from passed in file path
+    /// Collects keywords from str
     pub fn collect_keywords(&mut self) {
         self.load_stopwords();
         let re = Regex::new("(\\w+)").unwrap();
@@ -50,7 +50,7 @@ impl MapWordsString {
     }
 
     /// Returns a copy of sorted keywords
-    pub fn get_keywords(mut self: MapWordsString) -> Vec<(u16, String)> {
+    pub fn get_keywords(&mut self) -> Vec<(u16, String)> {
         // collect keywords if empty
         if self.map.is_empty() {
             self.collect_keywords();
