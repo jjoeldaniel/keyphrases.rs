@@ -8,6 +8,7 @@ pub struct MapWordsString {
     stop_words: HashSet<String>,
     map: HashMap<String, u16>,
     top_n: u8,
+    keywords: Vec<(u16, String)>,
 }
 
 impl MapWordsString {
@@ -18,6 +19,7 @@ impl MapWordsString {
             stop_words: HashSet::new(),
             map: HashMap::new(),
             top_n,
+            keywords: Vec::new(),
         }
     }
 
@@ -48,34 +50,36 @@ impl MapWordsString {
     }
 
     /// Returns a copy of sorted keywords
-    pub fn get_keywords(&self) -> Vec<(&u16, &String)> {
-        let mut sorted_vector: Vec<(&u16, &String)> = Vec::new();
+    pub fn get_keywords(mut self: MapWordsString) -> Vec<(u16, String)> {
+        // collect keywords if empty
+        if self.map.is_empty() {
+            self.collect_keywords();
+        }
+
+        let mut sorted_vector: Vec<(u16, String)> = Vec::new();
         for (k, v) in self.map.iter() {
-            sorted_vector.push((v, k));
+            sorted_vector.push((*v, k.clone()));
         }
 
         sorted_vector.sort_by(|a, b| b.cmp(a));
 
-        let mut sized_vector: Vec<(&u16, &String)> = Vec::new();
         let mut i: u8 = 0;
         for tup in sorted_vector {
             if i == self.top_n {
                 break;
             }
 
-            sized_vector.push((tup.0, tup.1));
+            self.keywords.push((tup.0, tup.1));
 
             i += 1;
         }
 
-        return sized_vector;
+        return self.keywords.clone();
     }
 
     /// Prints top_n keywords
     pub fn print_keywords(&self) {
-        let sorted_vector = self.get_keywords();
-
-        for tup in sorted_vector {
+        for tup in &self.keywords {
             println!("{} : {}", tup.0, tup.1);
         }
     }
