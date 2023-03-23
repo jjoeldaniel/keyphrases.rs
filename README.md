@@ -1,5 +1,7 @@
 # mapwords.rs
 
+![https://github.com/jjoeldaniel/mapwords.rs/actions/workflows/ci.yml](https://github.com/jjoeldaniel/mapwords.rs/actions/workflows/ci.yml/badge.svg?main)
+
 mapwords.rs is a Rust library that provides functionality for collecting keywords from a given string or file and then sorts and prints them based on their frequency. It ignores stop words and only returns the most frequently occurring keywords.
 
 ## Installation
