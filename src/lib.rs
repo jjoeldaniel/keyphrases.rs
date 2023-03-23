@@ -119,7 +119,12 @@ impl MapWordsFile {
     // Reads .txt files and outputs string
     pub fn read_file(&self) -> String {
         let contents = fs::read_to_string(&self.file_path);
-        return contents.unwrap();
+
+        if contents.is_err() {
+            panic!("Failed to read file path: {}", self.file_path);
+        }
+
+        return contents.unwrap_or(String::from(""));
     }
 
     /// Collects keywords from file
