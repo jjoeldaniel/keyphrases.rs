@@ -57,13 +57,16 @@ impl MapWordsString {
             self.collect_keywords();
         }
 
+        // Assign each k,v pair as a tuple into sorted_vector
         let mut sorted_vector: Vec<(u16, String)> = Vec::new();
         for (k, v) in self.map.iter() {
             sorted_vector.push((*v, k.clone()));
         }
 
+        // Sort by highest frequency
         sorted_vector.sort_by(|a, b| b.cmp(a));
 
+        // Push onto internal vec
         let mut i: u8 = 0;
         for tup in sorted_vector {
             if i == self.top_n {
@@ -89,6 +92,7 @@ impl MapWordsString {
     fn load_stopwords(&mut self) {
         let stopwords: &str = include_str!("stopwords.txt");
 
+        // Insert earch stopword into struct HashSet
         for line in stopwords.lines() {
             self.stop_words.insert(String::from(line));
         }
@@ -160,13 +164,16 @@ impl MapWordsFile {
             self.collect_keywords();
         }
 
+        // Assign each k,v pair as a tuple into sorted_vector
         let mut sorted_vector: Vec<(u16, String)> = Vec::new();
         for (k, v) in self.map.iter() {
             sorted_vector.push((*v, k.clone()));
         }
 
+        // Sort by highest frequency
         sorted_vector.sort_by(|a, b| b.cmp(a));
 
+        // Push onto internal vec
         let mut i: u8 = 0;
         for tup in sorted_vector {
             if i == self.top_n {
