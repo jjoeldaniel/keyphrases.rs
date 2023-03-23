@@ -68,4 +68,3 @@ pub mod map_words {
         return set;
     }
 }
-fn main() {}
