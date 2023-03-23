@@ -13,13 +13,14 @@ mapwords = "0.1.0"
 
 ## Usage
 
-First, import the `MapWordsString` struct from the mapwords crate:
+First, import the `MapWordsString` or `MapWordsFile` struct from the mapwords crate:
 
 ```rust
 use mapwords::MapWordsString;
+use mapwords::MapWordsFile;
 ```
 
-Then, create a new instance of the `MapWordsString` struct by calling the new function with a string and a number representing the number of top keywords to return:
+Then, create a new instance of the either struct by calling the new function with either a string or file path and a number representing the number of top keywords to return:
 
 ```rust
 let mut map_words = MapWordsString::new("This is a test string".to_string(), 2);
@@ -31,7 +32,8 @@ To collect the keywords from the string, call the `collect_keywords()` function:
 map_words.collect_keywords();
 ```
 
-You can then get the keywords by calling the `get_keywords()` function:
+You can then get the keywords by calling the `get_keywords()` function.
+This returns a `Vec<(&u16, &String)>` if you would like to print it out yourself
 
 ```rust
 let keywords = map_words.get_keywords();
