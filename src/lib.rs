@@ -1,3 +1,4 @@
+use regex::Regex;
 use std::collections::HashMap;
 use std::collections::HashSet;
 
@@ -21,33 +22,51 @@ impl MapWordsString {
     }
 
     /// Collects keywords from passed in file path
-    pub fn get_keywords(&mut self) {
+    pub fn collect_keywords(&mut self) {
         self.load_stopwords();
-        for k in self.str.split_whitespace() {
-            // Check if key is a stopword
+        let re = Regex::new("(\\w+)").unwrap();
+
+        for k in self.str.trim().split_whitespace() {
+            // Check if key is a stopword or fails to match regex
             //
             // Continues if true
-            if self.stop_words.contains(&k.to_lowercase()) {
+            if !re.is_match(&k) || self.stop_words.contains(&k.to_lowercase()) {
                 continue;
             }
 
-            // Check if key exists in map and
-            // appropriately increments value
-            //
-            // Otherwise, insert default value of 1
-            *self.map.entry(String::from(k)).or_insert(1) += 1;
+            let str: String = String::from(k);
+
+            if self.map.get(&str).is_some() {
+                // Update value
+                let stored_value: &u16 = self.map.get(&str).unwrap();
+                self.map.insert(str, stored_value + 1);
+            } else {
+                // Insert value
+                self.map.insert(str, 1);
+            }
         }
+    }
+
+    pub fn get_keywords(&self) -> HashMap<String, u16> {
+        return self.map.clone();
     }
 
     /// Prints top_n keywords
     pub fn print_keywords(&self) {
+        let mut sorted_vector: Vec<(&u16, &String)> = Vec::new();
+        for (k, v) in self.map.iter() {
+            sorted_vector.push((v, k));
+        }
+
+        sorted_vector.sort_by(|a, b| b.cmp(a));
+
         let mut i: u8 = 0;
-        for (k, v) in &self.map {
+        for tup in sorted_vector {
             if i == self.top_n {
                 return;
             }
 
-            println!("{} : {}", k, v);
+            println!("{} : {}", tup.1, tup.0);
 
             i += 1;
         }
