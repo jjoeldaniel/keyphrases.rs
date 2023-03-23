@@ -1,4 +1,14 @@
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'Cargo.toml'
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'Cargo.toml'
 
 name: CI
 
