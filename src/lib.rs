@@ -1,17 +1,18 @@
 use std::collections::HashMap;
 use std::collections::HashSet;
 
-pub struct MapwordsFile {
+/// Collects keywords from String by frequency, ignoring stopwords
+pub struct MapWordsString {
     str: String,
     stop_words: HashSet<String>,
     map: HashMap<String, u16>,
     top_n: u8,
 }
 
-impl MapwordsFile {
+impl MapWordsString {
     /// MapwordsString constructor
-    pub fn new(str: String, top_n: u8) -> MapwordsFile {
-        MapwordsFile {
+    pub fn new(str: String, top_n: u8) -> MapWordsString {
+        MapWordsString {
             str,
             stop_words: HashSet::new(),
             map: HashMap::new(),
