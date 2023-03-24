@@ -22,6 +22,22 @@ impl keyword_extractor {
             content_phrases,
         };
     }
+
+    /// Prints out all keywords, ignoring empty values
+    ///
+    /// Arguments:
+    /// * `top_n`: The number of keywords to print
+    ///
+    pub fn print_keywords(&self, top_n: usize) {
+        // Filter empty values
+        let filtered: Vec<_> = self
+            .content_phrases
+            .iter()
+            .filter(|&x| !x.is_empty())
+            .collect();
+
+        println!("{:?}", filtered);
+    }
 }
 
 /// Reads in stopwords and returns a HashSet of Strings
