@@ -1,6 +1,6 @@
 # keyphrases.rs
 
-![https://github.com/jjoeldaniel/mapwords.rs/actions/workflows/ci.yml](https://github.com/jjoeldaniel/mapwords.rs/actions/workflows/ci.yml/badge.svg?main)
+![https://github.com/jjoeldaniel/keyphrases.rs/actions/workflows/ci.yml](https://github.com/jjoeldaniel/keyphrases.rs/actions/workflows/ci.yml/badge.svg?main)
 
 keyphrases.rs is a Rapid Keyword Extraction (RAKE) algorithm implementation in Rust.
 
@@ -19,4 +19,4 @@ keyphrases = "0.1.1"
 
 ### License
 
-keyphrases.rs is licensed under the WTFPL License. See the [LICENSE](https://github.com/jjoeldaniel/mapwords.rs/blob/main/LICENSE) file for more details.
+keyphrases.rs is licensed under the WTFPL License. See the [LICENSE](https://github.com/jjoeldaniel/keyphrases.rs/blob/main/LICENSE) file for more details.
