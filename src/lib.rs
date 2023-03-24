@@ -115,5 +115,8 @@ fn extract_content_phrases(words: &Vec<String>) -> Vec<Vec<String>> {
         }
     }
 
+    // Remove any empty vectors
+    content_phrases.retain(|inner_vec| !inner_vec.is_empty());
+
     return content_phrases;
 }
