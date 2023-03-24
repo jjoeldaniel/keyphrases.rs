@@ -13,7 +13,7 @@ impl KeyPhraseExtractor {
         let words: Vec<String> = extract_words(&str);
         let str: String = String::from(str);
         let content_words: Vec<String> = extract_content_words(&words);
-        let content_phrases: Vec<Vec<String>> = extract_content_phrases(&words);
+        let content_phrases: Vec<Vec<String>> = extract_content_phrases(&str);
 
         return KeyPhraseExtractor {
             str,
@@ -97,25 +97,38 @@ fn extract_content_words(words: &Vec<String>) -> Vec<String> {
 // pub fn extract_content_words_frequency(content_words: &mut Vec<String>) {}
 
 /// Returns a vector of all content phrases
-fn extract_content_phrases(words: &Vec<String>) -> Vec<Vec<String>> {
+fn extract_content_phrases(input: &str) -> Vec<Vec<String>> {
     // stopwords
     let stopwords: HashSet<String> = load_stopwords();
 
     let mut content_phrases: Vec<Vec<String>> = Vec::new();
-    let mut content_words: Vec<String> = Vec::new();
-    let mut content_phrase: Vec<String> = Vec::new();
 
-    for word in words {
-        // Push word to phrases vec if we hit a stop word
-        // and clears the phrase vector.
-        if stopwords.contains(&word.to_lowercase()) {
-            content_phrases.push(content_phrase.clone());
-            content_phrase.clear();
-            continue;
-        } else {
-            // Push word to phrase and words vectors
-            content_phrase.push(word.to_string());
-            content_words.push(word.to_string());
+    // Loop over sentences and then commas
+    for sentence in input.split('.') {
+        for phrase in sentence.split(',') {
+            let mut content_phrase: Vec<String> = Vec::new();
+            let words: Vec<&str> = phrase.split_ascii_whitespace().collect();
+            let total_words = words.len();
+
+            for (i, word) in words.iter().enumerate() {
+                // If word is a stopword, push the phrase, clear, and
+                // move to the next split
+                if stopwords.contains(&word.to_ascii_lowercase()) {
+                    content_phrases.push(content_phrase.clone());
+                    content_phrase.clear();
+                    continue;
+                } else {
+                    // Append the current word to the phrase
+                    content_phrase.push(String::from(word.to_owned()));
+
+                    // If current word is the last word in the phrase,
+                    // push the phrase and clear
+                    if i == total_words - 1 {
+                        content_phrases.push(content_phrase.clone());
+                        content_phrase.clear();
+                    }
+                }
+            }
         }
     }
 
