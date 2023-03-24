@@ -1,8 +1,8 @@
 [package]
-description = "Rake based keyphrase extraction"
+description = "Rapid Automatic Keyword Extraction (RAKE) implementation in Rust"
 edition = "2021"
 homepage = "https://github.com/jjoeldaniel/keyphrases.rs"
-keywords = ["keyphrase", "keyphrases", "keywords", "extraction", "nlp"]
+keywords = ["keyphrase", "keyphrases", "keywords", "extraction", "nlp", "rake"]
 license = "WTFPL"
 name = "keyphrases"
 repository = "https://github.com/jjoeldaniel/keyphrases.rs"
