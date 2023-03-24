@@ -1,16 +1,14 @@
 mod tests {
-    use keyphrases;
+    use keyphrases::KeywordExtractor;
 
     #[test]
-    fn test_keywords() {
+    fn test_extract() {
         let test_string: &str = "Feature extraction is not that complex. There are many algorithms available that can help you with feature extraction. Rapid Automatic Keyword Extraction is one of those.";
-        let mut words: Vec<String> = keyphrases::extract_words(test_string);
-        let content_phrases: Vec<Vec<String>> = keyphrases::extract_content_phrases(&mut words);
+        let kp = KeywordExtractor::new(test_string);
 
-        for phrase in &content_phrases {
-            println!("{:?}", phrase);
-        }
-
-        assert!(false);
+        assert!(!kp.get_words().is_empty());
+        assert!(!kp.get_content_words().is_empty());
+        assert!(!kp.get_content_phrases().is_empty());
+        assert!(!kp.get_str().is_empty());
     }
 }
