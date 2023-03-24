@@ -1,218 +1,82 @@
 use regex::Regex;
 use std::collections::HashMap;
 use std::collections::HashSet;
-use std::fs;
 
-/// Filters a String by removing punction marks
-fn remove_punctuation(input: &mut String) {
-    let punctuation_marks: HashSet<char> = [
-        '.', ',', ';', ':', '!', '?', '-', '_', '"', '\'', '(', ')', '[', ']', '{', '}',
-    ]
-    .iter()
-    .cloned()
-    .collect();
-    input.retain(|c| !punctuation_marks.contains(&c));
-}
-/// Collects keywords from String by frequency, ignoring stopwords
-pub struct MapWordsString {
-    str: String,
-    stop_words: HashSet<String>,
-    map: HashMap<String, u16>,
-    top_n: u8,
-    keywords: Vec<(u16, String)>,
+/// Reads in stopwords and returns a HashSet of Strings
+fn load_stopwords() -> HashSet<String> {
+    let stopwords: &str = include_str!("stopwords.txt");
+    let mut stop_words: HashSet<String> = HashSet::new();
+
+    // Insert each stopword into struct HashSet
+    for line in stopwords.lines() {
+        stop_words.insert(String::from(line));
+    }
+
+    return stop_words;
 }
 
-impl MapWordsString {
-    /// MapwordsString constructor
-    pub fn new(str: String, top_n: u8) -> MapWordsString {
-        MapWordsString {
-            str,
-            stop_words: HashSet::new(),
-            map: HashMap::new(),
-            top_n,
-            keywords: Vec::new(),
-        }
-    }
+/// Returns a vector of all words
+fn extract_words(input: &str, words: &mut Vec<String>) {
+    // regex
+    let re = Regex::new(r"\b\w+\b").unwrap();
 
-    /// Collects keywords from str
-    fn collect_keywords(&mut self) {
-        self.load_stopwords();
-        let re = Regex::new("(\\w+)").unwrap();
+    // Mutable string vector of ALL words
+    words.clear();
+    words.extend(re.find_iter(input).map(|m| m.as_str().to_string()));
 
-        for k in self.str.to_lowercase().trim().split_whitespace() {
-            // Check if key is a stopword or fails to match regex
-            //
-            // Continues if true
-            if !re.is_match(&k) || self.stop_words.contains(k) {
-                continue;
-            }
-
-            let mut str: String = String::from(k);
-            remove_punctuation(&mut str);
-
-            if self.map.get(&str).is_some() {
-                // Update value
-                let stored_value: &u16 = self.map.get(&str).unwrap();
-                self.map.insert(str, stored_value + 1);
-            } else {
-                // Insert value
-                self.map.insert(str, 1);
-            }
-        }
-    }
-
-    /// Returns a copy of sorted keywords
-    pub fn get_keywords(&mut self) -> Vec<(u16, String)> {
-        // collect keywords if empty
-        if self.map.is_empty() {
-            self.collect_keywords();
-        }
-
-        // Assign each k,v pair as a tuple into sorted_vector
-        let mut sorted_vector: Vec<(u16, String)> = Vec::new();
-        for (k, v) in self.map.iter() {
-            sorted_vector.push((*v, k.clone()));
-        }
-
-        // Sort by highest frequency
-        sorted_vector.sort_by(|a, b| b.cmp(a));
-
-        // Push onto internal vec
-        let mut i: u8 = 0;
-        for tup in sorted_vector {
-            if i == self.top_n {
-                break;
-            }
-
-            self.keywords.push((tup.0, tup.1));
-
-            i += 1;
-        }
-
-        return self.keywords.clone();
-    }
-
-    /// Prints top_n keywords
-    pub fn print_keywords(&self) {
-        for tup in &self.keywords {
-            println!("{} : {}", tup.0, tup.1);
-        }
-    }
-
-    /// Loads stopwords
-    fn load_stopwords(&mut self) {
-        let stopwords: &str = include_str!("stopwords.txt");
-
-        // Insert earch stopword into struct HashSet
-        for line in stopwords.lines() {
-            self.stop_words.insert(String::from(line));
-        }
+    // Remove leading/trailing punctuation
+    for word in words.iter_mut() {
+        *word = word
+            .trim_matches(|c: char| !c.is_ascii_punctuation() || c.is_ascii_whitespace())
+            .to_string();
     }
 }
 
-/// Collects keywords from .txt files by frequency, ignoring stopwords
-pub struct MapWordsFile {
-    file_path: String,
-    stop_words: HashSet<String>,
-    map: HashMap<String, u16>,
-    top_n: u8,
-    keywords: Vec<(u16, String)>,
+/// Returns a vector of content words
+fn extract_content_words(words: &mut Vec<String>) -> Vec<String> {
+    // stopwords
+    let stopwords: HashSet<String> = load_stopwords();
+
+    let mut content_words: Vec<String> = Vec::new();
+
+    for word in words {
+        // Push word to phrases vec if we hit a stop word
+        // and clears the phrase vector.
+        if stopwords.contains(word) {
+            continue;
+        } else {
+            content_words.push(word.to_string());
+        }
+    }
+
+    return content_words;
 }
 
-impl MapWordsFile {
-    /// MapwordsString constructor
-    pub fn new(file_path: String, top_n: u8) -> MapWordsFile {
-        MapWordsFile {
-            file_path,
-            stop_words: HashSet::new(),
-            map: HashMap::new(),
-            top_n,
-            keywords: Vec::new(),
+/// Returns map of
+fn extract_content_words_frequency(content_words: &mut Vec<String>) {}
+
+/// Returns a vector of all content phrases
+fn extract_content_phrases(words: &mut Vec<String>) -> Vec<Vec<String>> {
+    // stopwords
+    let stopwords: HashSet<String> = load_stopwords();
+
+    let mut content_phrases: Vec<Vec<String>> = Vec::new();
+    let mut content_words: Vec<String> = Vec::new();
+    let mut content_phrase: Vec<String> = Vec::new();
+
+    for word in words {
+        // Push word to phrases vec if we hit a stop word
+        // and clears the phrase vector.
+        if stopwords.contains(word) {
+            content_phrases.push(content_phrase.clone());
+            content_phrase.clear();
+            continue;
+        } else {
+            // Push word to phrase and words vectors
+            content_phrase.push(word.to_string());
+            content_words.push(word.to_string());
         }
     }
 
-    // Reads .txt files and outputs string
-    pub fn read_file(&self) -> String {
-        let contents = fs::read_to_string(&self.file_path);
-
-        if contents.is_err() {
-            panic!("Failed to read file path: {}", self.file_path);
-        }
-
-        return contents.unwrap_or(String::from(""));
-    }
-
-    /// Collects keywords from file
-    fn collect_keywords(&mut self) {
-        self.load_stopwords();
-        let re = Regex::new("(\\w+)").unwrap();
-
-        for k in self.read_file().to_lowercase().trim().split_whitespace() {
-            // Check if key is a stopword or fails to match regex
-            //
-            // Continues if true
-            if !re.is_match(&k) || self.stop_words.contains(k) {
-                continue;
-            }
-
-            let mut str: String = String::from(k);
-            remove_punctuation(&mut str);
-
-            if self.map.get(&str).is_some() {
-                // Update value
-                let stored_value: &u16 = self.map.get(&str).unwrap();
-                self.map.insert(str, stored_value + 1);
-            } else {
-                // Insert value
-                self.map.insert(str, 1);
-            }
-        }
-    }
-
-    /// Returns a copy of sorted keywords
-    pub fn get_keywords(&mut self) -> Vec<(u16, String)> {
-        // collect keywords if empty
-        if self.map.is_empty() {
-            self.collect_keywords();
-        }
-
-        // Assign each k,v pair as a tuple into sorted_vector
-        let mut sorted_vector: Vec<(u16, String)> = Vec::new();
-        for (k, v) in self.map.iter() {
-            sorted_vector.push((*v, k.clone()));
-        }
-
-        // Sort by highest frequency
-        sorted_vector.sort_by(|a, b| b.cmp(a));
-
-        // Push onto internal vec
-        let mut i: u8 = 0;
-        for tup in sorted_vector {
-            if i == self.top_n {
-                break;
-            }
-
-            self.keywords.push((tup.0, tup.1));
-
-            i += 1;
-        }
-
-        return self.keywords.clone();
-    }
-
-    /// Prints top_n keywords
-    pub fn print_keywords(&self) {
-        for tup in &self.keywords {
-            println!("{} : {}", tup.0, tup.1);
-        }
-    }
-
-    /// Loads stopwords
-    fn load_stopwords(&mut self) {
-        let stopwords: &str = include_str!("stopwords.txt");
-
-        for line in stopwords.lines() {
-            self.stop_words.insert(String::from(line));
-        }
-    }
+    return content_phrases;
 }
