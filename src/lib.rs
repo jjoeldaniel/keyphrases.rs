@@ -3,6 +3,16 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 use std::fs;
 
+/// Filters a String by removing punction marks
+fn remove_punctuation(input: &mut String) {
+    let punctuation_marks: HashSet<char> = [
+        '.', ',', ';', ':', '!', '?', '-', '_', '"', '\'', '(', ')', '[', ']', '{', '}',
+    ]
+    .iter()
+    .cloned()
+    .collect();
+    input.retain(|c| !punctuation_marks.contains(&c));
+}
 /// Collects keywords from String by frequency, ignoring stopwords
 pub struct MapWordsString {
     str: String,
@@ -29,15 +39,16 @@ impl MapWordsString {
         self.load_stopwords();
         let re = Regex::new("(\\w+)").unwrap();
 
-        for k in self.str.trim().split_whitespace() {
+        for k in self.str.to_lowercase().trim().split_whitespace() {
             // Check if key is a stopword or fails to match regex
             //
             // Continues if true
-            if !re.is_match(&k) || self.stop_words.contains(&k.to_lowercase()) {
+            if !re.is_match(&k) || self.stop_words.contains(k) {
                 continue;
             }
 
-            let str: String = String::from(k);
+            let mut str: String = String::from(k);
+            remove_punctuation(&mut str);
 
             if self.map.get(&str).is_some() {
                 // Update value
@@ -136,15 +147,16 @@ impl MapWordsFile {
         self.load_stopwords();
         let re = Regex::new("(\\w+)").unwrap();
 
-        for k in self.read_file().trim().split_whitespace() {
+        for k in self.read_file().to_lowercase().trim().split_whitespace() {
             // Check if key is a stopword or fails to match regex
             //
             // Continues if true
-            if !re.is_match(&k) || self.stop_words.contains(&k.to_lowercase()) {
+            if !re.is_match(&k) || self.stop_words.contains(k) {
                 continue;
             }
 
-            let str: String = String::from(k);
+            let mut str: String = String::from(k);
+            remove_punctuation(&mut str);
 
             if self.map.get(&str).is_some() {
                 // Update value
