@@ -2,7 +2,7 @@
 
 [![made-with-rust](https://img.shields.io/badge/Made%20with-Rust-1f425f.svg)](https://www.rust-lang.org/) ![https://github.com/jjoeldaniel/keyphrases.rs/actions/workflows/ci.yml](https://github.com/jjoeldaniel/keyphrases.rs/actions/workflows/ci.yml/badge.svg?main)
 
-keyphrases.rs is a Rapid Keyword Extraction (RAKE) algorithm implementation in Rust.
+keyphrases.rs is a Rapid Automatic Keyword Extraction (RAKE) algorithm implementation in Rust.
 
 ## Installation
 
