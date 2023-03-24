@@ -1,6 +1,29 @@
 use regex::Regex;
 use std::collections::HashSet;
 
+pub struct keyword_extractor {
+    str: String,
+    words: Vec<String>,
+    content_words: Vec<String>,
+    content_phrases: Vec<Vec<String>>,
+}
+
+impl keyword_extractor {
+    pub fn new(str: &str) -> keyword_extractor {
+        let mut words: Vec<String> = extract_words(str);
+        let str: String = String::from(str);
+        let content_words: Vec<String> = extract_content_words(&mut words);
+        let content_phrases: Vec<Vec<String>> = extract_content_phrases(&mut words);
+
+        return keyword_extractor {
+            str,
+            words,
+            content_words,
+            content_phrases,
+        };
+    }
+}
+
 /// Reads in stopwords and returns a HashSet of Strings
 fn load_stopwords() -> HashSet<String> {
     let stopwords: &str = include_str!("stopwords.txt");
