@@ -45,4 +45,4 @@ map_words.print_keywords();
 
 ### License
 
-mapwords.rs is licensed under the WTFPL License. See the LICENSE file for more details.
+mapwords.rs is licensed under the WTFPL License. See the [LICENSE](https://github.com/jjoeldaniel/mapwords.rs/blob/main/LICENSE) file for more details.
