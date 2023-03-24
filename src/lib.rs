@@ -36,7 +36,7 @@ pub fn extract_content_words(words: &mut Vec<String>) -> Vec<String> {
     for word in words {
         // Push word to phrases vec if we hit a stop word
         // and clears the phrase vector.
-        if stopwords.contains(word) {
+        if stopwords.contains(&word.to_lowercase()) {
             continue;
         } else {
             content_words.push(word.to_string());
