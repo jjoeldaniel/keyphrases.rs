@@ -12,8 +12,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "mapwords"
-version = "0.1.5"
+name = "keyphrases"
+version = "0.1.0"
 dependencies = [
  "regex",
 ]

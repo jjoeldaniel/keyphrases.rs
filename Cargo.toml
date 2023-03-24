@@ -1,12 +1,12 @@
 [package]
-description = "HashMap based keyword extraction "
+description = "Rake based keyphrase extraction"
 edition = "2021"
 homepage = "https://github.com/jjoeldaniel/mapwords.rs"
-keywords = ["keywords", "extraction"]
+keywords = ["keyphrase", "keywords", "extraction"]
 license = "WTFPL"
-name = "mapwords"
+name = "keyphrases"
 repository = "https://github.com/jjoeldaniel/mapwords.rs"
-version = "0.1.5"
+version = "0.1.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
