@@ -1,21 +1,21 @@
 use regex::Regex;
 use std::collections::HashSet;
 
-pub struct KeywordExtractor {
+pub struct KeyPhraseExtractor {
     str: String,
     words: Vec<String>,
     content_words: Vec<String>,
     content_phrases: Vec<Vec<String>>,
 }
 
-impl KeywordExtractor {
-    pub fn new(str: &str) -> KeywordExtractor {
+impl KeyPhraseExtractor {
+    pub fn new(str: &str) -> KeyPhraseExtractor {
         let words: Vec<String> = extract_words(&str);
         let str: String = String::from(str);
         let content_words: Vec<String> = extract_content_words(&words);
         let content_phrases: Vec<Vec<String>> = extract_content_phrases(&words);
 
-        return KeywordExtractor {
+        return KeyPhraseExtractor {
             str,
             words,
             content_words,
