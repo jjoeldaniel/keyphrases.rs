@@ -10,10 +10,10 @@ pub struct KeywordExtractor {
 
 impl KeywordExtractor {
     pub fn new(str: &str) -> KeywordExtractor {
-        let mut words: Vec<String> = extract_words(str);
+        let words: Vec<String> = extract_words(&str);
         let str: String = String::from(str);
-        let content_words: Vec<String> = extract_content_words(&mut words);
-        let content_phrases: Vec<Vec<String>> = extract_content_phrases(&mut words);
+        let content_words: Vec<String> = extract_content_words(&words);
+        let content_phrases: Vec<Vec<String>> = extract_content_phrases(&words);
 
         return KeywordExtractor {
             str,
@@ -50,7 +50,7 @@ pub fn extract_words(input: &str) -> Vec<String> {
 }
 
 /// Returns a vector of content words
-pub fn extract_content_words(words: &mut Vec<String>) -> Vec<String> {
+pub fn extract_content_words(words: &Vec<String>) -> Vec<String> {
     // stopwords
     let stopwords: HashSet<String> = load_stopwords();
 
@@ -73,7 +73,7 @@ pub fn extract_content_words(words: &mut Vec<String>) -> Vec<String> {
 // pub fn extract_content_words_frequency(content_words: &mut Vec<String>) {}
 
 /// Returns a vector of all content phrases
-pub fn extract_content_phrases(words: &mut Vec<String>) -> Vec<Vec<String>> {
+pub fn extract_content_phrases(words: &Vec<String>) -> Vec<Vec<String>> {
     // stopwords
     let stopwords: HashSet<String> = load_stopwords();
 
