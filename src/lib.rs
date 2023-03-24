@@ -1,42 +1,26 @@
 use regex::Regex;
 use std::collections::HashSet;
 
-pub struct keyword_extractor {
+pub struct KeywordExtractor {
     str: String,
     words: Vec<String>,
     content_words: Vec<String>,
     content_phrases: Vec<Vec<String>>,
 }
 
-impl keyword_extractor {
-    pub fn new(str: &str) -> keyword_extractor {
+impl KeywordExtractor {
+    pub fn new(str: &str) -> KeywordExtractor {
         let mut words: Vec<String> = extract_words(str);
         let str: String = String::from(str);
         let content_words: Vec<String> = extract_content_words(&mut words);
         let content_phrases: Vec<Vec<String>> = extract_content_phrases(&mut words);
 
-        return keyword_extractor {
+        return KeywordExtractor {
             str,
             words,
             content_words,
             content_phrases,
         };
-    }
-
-    /// Prints out all keywords, ignoring empty values
-    ///
-    /// Arguments:
-    /// * `top_n`: The number of keywords to print
-    ///
-    pub fn print_keywords(&self, top_n: usize) {
-        // Filter empty values
-        let filtered: Vec<_> = self
-            .content_phrases
-            .iter()
-            .filter(|&x| !x.is_empty())
-            .collect();
-
-        println!("{:?}", filtered);
     }
 }
 
