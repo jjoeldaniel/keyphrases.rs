@@ -23,24 +23,28 @@ impl KeyPhraseExtractor {
         };
     }
 
-    // Returns a reference to `words`
-    pub fn get_words(&self) -> &Vec<String> {
-        return &self.words;
+    // Returns a mutable copy of `words`
+    pub fn get_words(&self) -> Vec<String> {
+        let mut vec = self.words.to_vec();
+        return vec;
     }
 
-    // Returns a reference to `str`
-    pub fn get_str(&self) -> &String {
-        return &self.str;
+    // Returns a mutable copy of `str`
+    pub fn get_str(&self) -> String {
+        let mut str = self.str.clone();
+        return str;
     }
 
-    // Returns a reference to `content_words`
-    pub fn get_content_words(&self) -> &Vec<String> {
-        return &self.content_words;
+    // Returns a mutable copy of `content_words`
+    pub fn get_content_words(&self) -> Vec<String> {
+        let mut vec = self.content_words.to_vec();
+        return vec;
     }
 
-    // Returns a reference to `content_phrases`
-    pub fn get_content_phrases(&self) -> &Vec<Vec<String>> {
-        return &self.content_phrases;
+    // Returns a mutable copy of `content_phrases`
+    pub fn get_content_phrases(&self) -> Vec<Vec<String>> {
+        let mut vec = self.content_phrases.to_vec();
+        return vec;
     }
 }
 
