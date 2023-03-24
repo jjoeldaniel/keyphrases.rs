@@ -38,7 +38,7 @@ fn load_stopwords() -> HashSet<String> {
 }
 
 /// Returns a vector of all words
-pub fn extract_words(input: &str) -> Vec<String> {
+fn extract_words(input: &str) -> Vec<String> {
     // regex
     let re = Regex::new(r"\b\w+\b").unwrap();
 
@@ -50,7 +50,7 @@ pub fn extract_words(input: &str) -> Vec<String> {
 }
 
 /// Returns a vector of content words
-pub fn extract_content_words(words: &Vec<String>) -> Vec<String> {
+fn extract_content_words(words: &Vec<String>) -> Vec<String> {
     // stopwords
     let stopwords: HashSet<String> = load_stopwords();
 
@@ -73,7 +73,7 @@ pub fn extract_content_words(words: &Vec<String>) -> Vec<String> {
 // pub fn extract_content_words_frequency(content_words: &mut Vec<String>) {}
 
 /// Returns a vector of all content phrases
-pub fn extract_content_phrases(words: &Vec<String>) -> Vec<Vec<String>> {
+fn extract_content_phrases(words: &Vec<String>) -> Vec<Vec<String>> {
     // stopwords
     let stopwords: HashSet<String> = load_stopwords();
 
