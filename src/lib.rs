@@ -1,5 +1,4 @@
 use regex::Regex;
-use std::collections::HashMap;
 use std::collections::HashSet;
 
 /// Reads in stopwords and returns a HashSet of Strings
@@ -16,24 +15,19 @@ fn load_stopwords() -> HashSet<String> {
 }
 
 /// Returns a vector of all words
-fn extract_words(input: &str, words: &mut Vec<String>) {
+pub fn extract_words(input: &str) -> Vec<String> {
     // regex
     let re = Regex::new(r"\b\w+\b").unwrap();
 
     // Mutable string vector of ALL words
-    words.clear();
-    words.extend(re.find_iter(input).map(|m| m.as_str().to_string()));
+    let mut content_words: Vec<String> = Vec::new();
+    content_words.extend(re.find_iter(input).map(|m| m.as_str().to_string()));
 
-    // Remove leading/trailing punctuation
-    for word in words.iter_mut() {
-        *word = word
-            .trim_matches(|c: char| !c.is_ascii_punctuation() || c.is_ascii_whitespace())
-            .to_string();
-    }
+    return content_words;
 }
 
 /// Returns a vector of content words
-fn extract_content_words(words: &mut Vec<String>) -> Vec<String> {
+pub fn extract_content_words(words: &mut Vec<String>) -> Vec<String> {
     // stopwords
     let stopwords: HashSet<String> = load_stopwords();
 
@@ -53,10 +47,10 @@ fn extract_content_words(words: &mut Vec<String>) -> Vec<String> {
 }
 
 /// Returns map of
-fn extract_content_words_frequency(content_words: &mut Vec<String>) {}
+// pub fn extract_content_words_frequency(content_words: &mut Vec<String>) {}
 
 /// Returns a vector of all content phrases
-fn extract_content_phrases(words: &mut Vec<String>) -> Vec<Vec<String>> {
+pub fn extract_content_phrases(words: &mut Vec<String>) -> Vec<Vec<String>> {
     // stopwords
     let stopwords: HashSet<String> = load_stopwords();
 
