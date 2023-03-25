@@ -37,7 +37,7 @@ impl KeyPhraseExtractor {
     }
 
     // Constructor
-    pub fn new(&self, str: &str) -> KeyPhraseExtractor {
+    pub fn new(str: &str) -> KeyPhraseExtractor {
         let words: Vec<String> = extract_words(&str);
         let str: String = String::from(str);
         let content_words: Vec<String> = extract_content_words(&words);
