@@ -19,10 +19,18 @@ impl KeyPhraseExtractor {
         word_deg: &mut HashMap<String, usize>,
     ) {
         for phrase in content_phrases {
+            let mut word_added_len: HashSet<String> = HashSet::new();
             for word in &phrase {
                 // Set the word deg value of the word to the length of the phrase
                 // Note: This is assigning, so its fine if it runs over duplicates
-                word_deg.insert(word.clone(), phrase.len());
+                if !word_added_len.contains(word) {
+                    if word_deg.contains_key(word) {
+                        word_deg.insert(word.clone(), phrase.len() + word_deg.get(word).unwrap());
+                    } else {
+                        word_deg.insert(word.clone(), phrase.len());
+                    }
+                    word_added_len.insert(word.clone());
+                }
 
                 // if word is stored and is some value
                 // increment currently stored value by 1
@@ -163,7 +171,7 @@ fn extract_content_phrases(input: &str) -> Vec<Vec<String>> {
                     continue;
                 } else {
                     // Append the current word to the phrase
-                    content_phrase.push(String::from(word.to_owned()));
+                    content_phrase.push(String::from(word.to_owned()).to_ascii_lowercase());
 
                     // If current word is the last word in the phrase,
                     // push the phrase and clear
