@@ -3,8 +3,6 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 
 pub struct KeyPhraseExtractor {
-    str: String,
-    words: Vec<String>,
     content_words: Vec<String>,
     content_phrases: Vec<Vec<String>>,
     word_freq: HashMap<String, usize>,
@@ -47,9 +45,8 @@ impl KeyPhraseExtractor {
     /// Constructor
     pub fn new(str: &str) -> KeyPhraseExtractor {
         let words: Vec<String> = extract_words(&str);
-        let str: String = String::from(str);
         let content_words: Vec<String> = extract_content_words(&words);
-        let content_phrases: Vec<Vec<String>> = extract_content_phrases(&str);
+        let content_phrases: Vec<Vec<String>> = extract_content_phrases(&String::from(str));
 
         // maps
         let mut word_freq: HashMap<String, usize> = HashMap::new();
@@ -58,8 +55,6 @@ impl KeyPhraseExtractor {
         KeyPhraseExtractor::initialize_maps(content_phrases.clone(), &mut word_freq, &mut word_deg);
 
         return KeyPhraseExtractor {
-            str,
-            words,
             content_words,
             content_phrases,
             word_freq,
