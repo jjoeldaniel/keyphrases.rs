@@ -44,7 +44,7 @@ impl KeyPhraseExtractor {
         }
     }
 
-    // Constructor
+    /// Constructor
     pub fn new(str: &str) -> KeyPhraseExtractor {
         let words: Vec<String> = extract_words(&str);
         let str: String = String::from(str);
@@ -67,7 +67,7 @@ impl KeyPhraseExtractor {
         };
     }
 
-    // Returns a copy of 'phrase_degree_scores'
+    /// Returns a map of a degree score and its respective phrase
     pub fn get_phrase_degree_scores(&self) -> HashMap<String, String> {
         // Map of degree scores with their associated phrase
         let mut phrase_degree_score: HashMap<String, String> = HashMap::new();
@@ -95,31 +95,31 @@ impl KeyPhraseExtractor {
         return freq;
     }
 
-    // Returns a copy of `word_deg`
+    /// Returns a copy of `word_deg`
     pub fn get_word_deg(&self) -> HashMap<String, usize> {
         let deg = self.word_deg.clone();
         return deg;
     }
 
-    // Returns a copy of `words`
+    /// Returns a copy of `words`
     pub fn get_words(&self) -> Vec<String> {
         let vec = self.words.to_vec();
         return vec;
     }
 
-    // Returns a copy of `str`
+    /// Returns a copy of `str`
     pub fn get_str(&self) -> String {
         let str = self.str.clone();
         return str;
     }
 
-    // Returns a copy of `content_words`
+    /// Returns a copy of `content_words`
     pub fn get_content_words(&self) -> Vec<String> {
         let vec = self.content_words.to_vec();
         return vec;
     }
 
-    // Returns a copy of `content_phrases`
+    /// Returns a copy of `content_phrases`
     pub fn get_content_phrases(&self) -> Vec<Vec<String>> {
         let vec = self.content_phrases.to_vec();
         return vec;
