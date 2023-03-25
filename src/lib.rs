@@ -7,24 +7,30 @@ pub struct KeyPhraseExtractor {
     words: Vec<String>,
     content_words: Vec<String>,
     content_phrases: Vec<Vec<String>>,
-    word_freq: HashMap<String, u16>,
+    word_freq: HashMap<String, usize>,
+    word_deg: HashMap<String, usize>,
 }
 
 impl KeyPhraseExtractor {
     /// Initializes word frequency and degree maps
-    fn initialize_maps(content_phrases: Vec<Vec<String>>, word_freq: &mut HashMap<String, u16>) {
+    fn initialize_maps(
+        content_phrases: Vec<Vec<String>>,
+        word_freq: &mut HashMap<String, usize>,
+        word_deg: &mut HashMap<String, usize>,
+    ) {
         for phrase in content_phrases {
-            // map keeping track of if we have added length of keyphrase to word
-            let added_length: HashMap<String, bool> = HashMap::new();
+            for word in &phrase {
+                // Set the word deg value of the word to the length of the phrase
+                // Note: This is assigning, so its fine if it runs over duplicates
+                word_deg.insert(word.clone(), phrase.len());
 
-            for word in phrase {
                 // if word is stored and is some value
                 // increment currently stored value by 1
-                if word_freq.contains_key(&word) {
-                    let curr_freq = word_freq.get(&word);
-                    word_freq.insert(word, *curr_freq.unwrap_or(&1) + 1);
+                if word_freq.contains_key(word) {
+                    let curr_freq = word_freq.get(word);
+                    word_freq.insert(word.clone(), *curr_freq.unwrap_or(&1) + 1);
                 } else {
-                    word_freq.insert(word, 1);
+                    word_freq.insert(word.clone(), 1);
                 }
             }
         }
@@ -38,8 +44,9 @@ impl KeyPhraseExtractor {
         let content_phrases: Vec<Vec<String>> = extract_content_phrases(&str);
 
         // maps
-        let mut word_freq: HashMap<String, u16> = HashMap::new();
-        KeyPhraseExtractor::initialize_maps(content_phrases.clone(), &mut word_freq);
+        let mut word_freq: HashMap<String, usize> = HashMap::new();
+        let mut word_deg: HashMap<String, usize> = HashMap::new();
+        KeyPhraseExtractor::initialize_maps(content_phrases.clone(), &mut word_freq, &mut word_deg);
 
         return KeyPhraseExtractor {
             str,
@@ -47,13 +54,20 @@ impl KeyPhraseExtractor {
             content_words,
             content_phrases,
             word_freq,
+            word_deg,
         };
     }
 
     // Returns a copy of `word_freq`
-    pub fn get_word_freq(&self) -> HashMap<String, u16> {
+    pub fn get_word_freq(&self) -> HashMap<String, usize> {
         let freq = self.word_freq.clone();
         return freq;
+    }
+
+    // Returns a copy of `word_deg`
+    pub fn get_word_deg(&self) -> HashMap<String, usize> {
+        let deg = self.word_deg.clone();
+        return deg;
     }
 
     // Returns a copy of `words`
