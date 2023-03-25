@@ -1,4 +1,5 @@
 use regex::Regex;
+use std::collections::HashMap;
 use std::collections::HashSet;
 
 pub struct KeyPhraseExtractor {
@@ -6,44 +7,76 @@ pub struct KeyPhraseExtractor {
     words: Vec<String>,
     content_words: Vec<String>,
     content_phrases: Vec<Vec<String>>,
+    word_freq: HashMap<String, u16>,
 }
 
 impl KeyPhraseExtractor {
-    pub fn new(str: &str) -> KeyPhraseExtractor {
+    /// Initializes word frequency and degree maps
+    fn initialize_maps(content_phrases: Vec<Vec<String>>, word_freq: &mut HashMap<String, u16>) {
+        for phrase in content_phrases {
+            // map keeping track of if we have added length of keyphrase to word
+            let added_length: HashMap<String, bool> = HashMap::new();
+
+            for word in phrase {
+                // if word is stored and is some value
+                // increment currently stored value by 1
+                if word_freq.contains_key(&word) && word_freq.get(&word).is_some() {
+                    let curr_freq = word_freq.get(&word);
+                    word_freq.insert(word, *curr_freq.unwrap_or(&1) + 1);
+                } else {
+                    word_freq.insert(word, 1);
+                }
+            }
+        }
+    }
+
+    // Constructor
+    pub fn new(&self, str: &str) -> KeyPhraseExtractor {
         let words: Vec<String> = extract_words(&str);
         let str: String = String::from(str);
         let content_words: Vec<String> = extract_content_words(&words);
         let content_phrases: Vec<Vec<String>> = extract_content_phrases(&str);
+
+        // maps
+        let mut word_freq: HashMap<String, u16> = HashMap::new();
+        KeyPhraseExtractor::initialize_maps(content_phrases.clone(), &mut word_freq);
 
         return KeyPhraseExtractor {
             str,
             words,
             content_words,
             content_phrases,
+            word_freq,
         };
     }
 
-    // Returns a mutable copy of `words`
+    // Returns a copy of `word_freq`
+    pub fn get_word_freq(&self) -> HashMap<String, u16> {
+        let freq = self.word_freq.clone();
+        return freq;
+    }
+
+    // Returns a copy of `words`
     pub fn get_words(&self) -> Vec<String> {
-        let mut vec = self.words.to_vec();
+        let vec = self.words.to_vec();
         return vec;
     }
 
-    // Returns a mutable copy of `str`
+    // Returns a copy of `str`
     pub fn get_str(&self) -> String {
-        let mut str = self.str.clone();
+        let str = self.str.clone();
         return str;
     }
 
-    // Returns a mutable copy of `content_words`
+    // Returns a copy of `content_words`
     pub fn get_content_words(&self) -> Vec<String> {
-        let mut vec = self.content_words.to_vec();
+        let vec = self.content_words.to_vec();
         return vec;
     }
 
-    // Returns a mutable copy of `content_phrases`
+    // Returns a copy of `content_phrases`
     pub fn get_content_phrases(&self) -> Vec<Vec<String>> {
-        let mut vec = self.content_phrases.to_vec();
+        let vec = self.content_phrases.to_vec();
         return vec;
     }
 }
@@ -92,9 +125,6 @@ fn extract_content_words(words: &Vec<String>) -> Vec<String> {
 
     return content_words;
 }
-
-/// Returns map of
-// pub fn extract_content_words_frequency(content_words: &mut Vec<String>) {}
 
 /// Returns a vector of all content phrases
 fn extract_content_phrases(input: &str) -> Vec<Vec<String>> {
