@@ -69,7 +69,7 @@ impl KeyPhraseExtractor {
 
     /// Returns a vector of tuples containing a cumulative degree score
     /// and its respective phrase
-    pub fn get_phrase_degree_scores(&self) -> Vec<(f32, String)> {
+    pub fn get_keywords(&self) -> Vec<(f32, String)> {
         let mut phrase_degree_score: Vec<(f32, String)> = Vec::new();
 
         // Loop through each phrase
@@ -100,18 +100,6 @@ impl KeyPhraseExtractor {
     pub fn get_word_deg(&self) -> HashMap<String, usize> {
         let deg = self.word_deg.clone();
         return deg;
-    }
-
-    /// Returns a copy of `words`
-    pub fn get_words(&self) -> Vec<String> {
-        let vec = self.words.to_vec();
-        return vec;
-    }
-
-    /// Returns a copy of `str`
-    pub fn get_str(&self) -> String {
-        let str = self.str.clone();
-        return str;
     }
 
     /// Returns a copy of `content_words`
