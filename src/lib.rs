@@ -54,6 +54,10 @@ impl KeyPhraseExtractor {
         // maps
         let mut word_freq: HashMap<String, usize> = HashMap::new();
         let mut word_deg: HashMap<String, usize> = HashMap::new();
+
+        // phrase attributes
+        let mut phrase_degree_scores: HashMap<String, usize> = HashMap::new();
+
         KeyPhraseExtractor::initialize_maps(content_phrases.clone(), &mut word_freq, &mut word_deg);
 
         return KeyPhraseExtractor {
@@ -64,6 +68,27 @@ impl KeyPhraseExtractor {
             word_freq,
             word_deg,
         };
+    }
+
+    // Returns a copy of 'phrase_degree_scores'
+    pub fn get_phrase_degree_scores(&self) -> HashMap<usize, String> {
+        // Map of degree scores with their associated phrase
+        let mut phrase_degree_score: HashMap<usize, String> = HashMap::new();
+
+        // Loop through each phrase
+        for phrase in self.get_content_phrases() {
+            let mut cum_score: usize = 0;
+
+            // Get cumulative score
+            for word in &phrase {
+                cum_score += self.get_word_deg().get(word).unwrap();
+            }
+
+            // Insert cumulative score and phrase into list
+            phrase_degree_score.insert(cum_score, phrase.clone().join(" "));
+        }
+
+        return phrase_degree_score;
     }
 
     // Returns a copy of `word_freq`
