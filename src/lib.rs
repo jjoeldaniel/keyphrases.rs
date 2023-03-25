@@ -20,7 +20,7 @@ impl KeyPhraseExtractor {
             for word in phrase {
                 // if word is stored and is some value
                 // increment currently stored value by 1
-                if word_freq.contains_key(&word) && word_freq.get(&word).is_some() {
+                if word_freq.contains_key(&word) {
                     let curr_freq = word_freq.get(&word);
                     word_freq.insert(word, *curr_freq.unwrap_or(&1) + 1);
                 } else {
