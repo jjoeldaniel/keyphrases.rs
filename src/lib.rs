@@ -67,10 +67,10 @@ impl KeyPhraseExtractor {
         };
     }
 
-    /// Returns a map of a degree score and its respective phrase
-    pub fn get_phrase_degree_scores(&self) -> HashMap<String, String> {
-        // Map of degree scores with their associated phrase
-        let mut phrase_degree_score: HashMap<String, String> = HashMap::new();
+    /// Returns a vector of tuples containing a cumulative degree score
+    /// and its respective phrase
+    pub fn get_phrase_degree_scores(&self) -> Vec<(f32, String)> {
+        let mut phrase_degree_score: Vec<(f32, String)> = Vec::new();
 
         // Loop through each phrase
         for phrase in self.get_content_phrases() {
@@ -83,9 +83,10 @@ impl KeyPhraseExtractor {
             }
 
             // Insert cumulative score and phrase into list
-            phrase_degree_score.insert(cum_score.to_string(), phrase.clone().join(" "));
+            phrase_degree_score.push((cum_score, phrase.clone().join(" ")));
         }
 
+        phrase_degree_score.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
         return phrase_degree_score;
     }
 
