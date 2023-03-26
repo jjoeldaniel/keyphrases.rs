@@ -2,6 +2,16 @@ use regex::Regex;
 use std::collections::HashMap;
 use std::collections::HashSet;
 
+/// `KeyPhraseExtractor` is a struct that allows for keyphrase and keyword extraction
+/// utilizing Rapid Automatic Keyword Extraction (RAKE).
+///
+/// Properties:
+///
+/// * `content_words`: A vector of all the words in the text.
+/// * `content_phrases`: A vector of vectors of strings. Each vector of strings represents a phrase.
+/// * `word_freq`: A hashmap that maps each word to its frequency in the document.
+/// * `word_deg`: A HashMap that maps each word to its degree. The degree of a word is the number of
+/// words that are one edit distance away from it.
 pub struct KeyPhraseExtractor {
     content_words: Vec<String>,
     content_phrases: Vec<Vec<String>>,
