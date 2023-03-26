@@ -8,7 +8,7 @@ use std::collections::HashSet;
 /// Properties:
 ///
 /// * `content_words`: A vector of all the words in the text.
-/// * `content_phrases`: A vector of vectors of strings. Each vector of strings represents a phrase.
+/// * `content_phrases`: A vector of keyphrases. Each keyphrase holds a vector of strings.
 /// * `word_freq`: A hashmap that maps each word to its frequency in the document.
 /// * `word_deg`: A HashMap that maps each word to its degree. The degree of a word is the number of
 /// words that are one edit distance away from it.
