@@ -4,6 +4,12 @@
 
 keyphrases.rs is a Rapid Automatic Keyword Extraction (RAKE) algorithm implementation in Rust.
 
+- [keyphrases.rs](#keyphrasesrs)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Documentation](#documentation)
+    - [License](#license)
+
 ## Installation
 
 To use keyphrases.rs in your Rust project, add the following line to your Cargo.toml file:
@@ -15,7 +21,26 @@ keyphrases = "0.1.4"
 
 ## Usage
 
-🚧 Under Construction 🚧
+1. Create a new instance of `KeyPhraseExtractor` by passing the string you want to extract key phrases from:
+
+   ```rust
+   let text = "This is the text to extract key phrases from.";
+   let extractor = KeyPhraseExtractor::new(text);
+   ```
+
+2. Call the desired methods on the `extractor` instance to extract the relevant information:
+
+   ```rust
+    let keywords = extractor.get_keywords();
+    let word_freq = extractor.get_word_freq();
+    let word_deg = extractor.get_word_deg();
+    let content_words = extractor.get_content_words();
+    let content_phrases = extractor.get_content_phrases();
+   ```
+
+   Each method returns the relevant information as described in the function docs below.
+
+## [Documentation](https://docs.rs/keyphrases/latest/keyphrases/struct.KeyPhraseExtractor.html)
 
 ### License
 
