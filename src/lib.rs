@@ -10,7 +10,7 @@ pub struct KeyPhraseExtractor {
 }
 
 impl KeyPhraseExtractor {
-    /// Initializes word frequency and degree maps
+    /// Initializing the word_freq and word_deg maps.
     fn initialize_maps(
         content_phrases: Vec<Vec<String>>,
         word_freq: &mut HashMap<String, usize>,
@@ -19,8 +19,9 @@ impl KeyPhraseExtractor {
         for phrase in content_phrases {
             let mut word_added_len: HashSet<String> = HashSet::new();
             for word in &phrase {
-                // Set the word deg value of the word to the length of the phrase
-                // Note: This is assigning, so its fine if it runs over duplicates
+                // This is checking if the word has already been added to the word_deg map. If it has,
+                // it will add the length of the phrase to the current value. If it hasn't, it will add
+                // the length of the phrase to the map.
                 if !word_added_len.contains(word) {
                     if word_deg.contains_key(word) {
                         word_deg.insert(word.clone(), phrase.len() + word_deg.get(word).unwrap());
@@ -30,8 +31,8 @@ impl KeyPhraseExtractor {
                     word_added_len.insert(word.clone());
                 }
 
-                // if word is stored and is some value
-                // increment currently stored value by 1
+                // This is checking if the word has already been added to the word_freq map. If stored,
+                // increment the current value. Otherwise, insert the value with a default of 1
                 if word_freq.contains_key(word) {
                     let curr_freq = word_freq.get(word);
                     word_freq.insert(word.clone(), *curr_freq.unwrap_or(&1) + 1);
@@ -42,7 +43,15 @@ impl KeyPhraseExtractor {
         }
     }
 
-    /// Constructor
+    /// Constructs a new KeyPhraseExtractor instace
+    ///
+    /// Arguments:
+    ///
+    /// * `str`: The string to extract key phrases from.
+    ///
+    /// Returns:
+    ///
+    /// A KeyPhraseExtractor struct
     pub fn new(str: &str) -> KeyPhraseExtractor {
         let words: Vec<String> = extract_words(&str);
         let content_words: Vec<String> = extract_content_words(&words);
@@ -85,32 +94,54 @@ impl KeyPhraseExtractor {
         return phrase_degree_score;
     }
 
-    // Returns a copy of `word_freq`
+    /// Returns a copy of the word_freq HashMap.
+    ///
+    /// Returns:
+    ///
+    /// A clone of the word_freq HashMap.
     pub fn get_word_freq(&self) -> HashMap<String, usize> {
         let freq = self.word_freq.clone();
         return freq;
     }
 
-    /// Returns a copy of `word_deg`
+    /// Returns a copy of the word_deg HashMap.
+    ///
+    /// Returns:
+    ///
+    /// A clone of the word_deg HashMap.
     pub fn get_word_deg(&self) -> HashMap<String, usize> {
         let deg = self.word_deg.clone();
         return deg;
     }
 
-    /// Returns a copy of `content_words`
+    /// Returns a vector of all content words.
+    ///
+    /// Returns:
+    ///
+    /// A vector of strings.
     pub fn get_content_words(&self) -> Vec<String> {
         let vec = self.content_words.to_vec();
         return vec;
     }
 
-    /// Returns a copy of `content_phrases`
+    /// Returns a vector of of all content phrases
+    ///
+    /// Content phrases contain content word vectors.
+    ///
+    /// Returns:
+    ///
+    /// A vector of vectors of strings.
     pub fn get_content_phrases(&self) -> Vec<Vec<String>> {
         let vec = self.content_phrases.to_vec();
         return vec;
     }
 }
 
-/// Reads in stopwords and returns a HashSet of Strings
+/// Reads in the stopwords.txt file, splits it into lines, and inserts each line into a HashSet
+///
+/// Returns:
+///
+/// A HashSet of Strings
 fn load_stopwords() -> HashSet<String> {
     let stopwords: &str = include_str!("stopwords.txt");
     let mut stop_words: HashSet<String> = HashSet::new();
@@ -123,7 +154,16 @@ fn load_stopwords() -> HashSet<String> {
     return stop_words;
 }
 
-/// Returns a vector of all words
+/// Extracts all individual words of a input &str and returns
+/// all words in vector form.
+///
+/// Arguments:
+///
+/// * `input`: &str - The input string to extract words from
+///
+/// Returns:
+///
+/// A vector of strings
 fn extract_words(input: &str) -> Vec<String> {
     // regex
     let re = Regex::new(r"\b\w+\b").unwrap();
@@ -135,7 +175,16 @@ fn extract_words(input: &str) -> Vec<String> {
     return content_words;
 }
 
-/// Returns a vector of content words
+/// Takes a vector of all words passed into KeyPhraseExtractor constructor,
+/// and returns a vector of content words (words that are not stopwords)
+///
+/// Arguments:
+///
+/// * `words`: A vector of strings, where each string is a word in the text.
+///
+/// Returns:
+///
+/// A vector of strings.
 fn extract_content_words(words: &Vec<String>) -> Vec<String> {
     // stopwords
     let stopwords: HashSet<String> = load_stopwords();
@@ -155,7 +204,19 @@ fn extract_content_words(words: &Vec<String>) -> Vec<String> {
     return content_words;
 }
 
-/// Returns a vector of all content phrases
+/// Splits an input string into sentences, then splits each sentence into phrases, then splits each
+/// phrase into words, then checks each word against a list of stopwords, and finally returns a vector
+/// of vectors of strings
+///
+/// This constructs a RAKE keyphrase.
+///
+/// Arguments:
+///
+/// * `input`: The input string to extract phrases from
+///
+/// Returns:
+///
+/// A vector of vectors of strings.
 fn extract_content_phrases(input: &str) -> Vec<Vec<String>> {
     // stopwords
     let stopwords: HashSet<String> = load_stopwords();
