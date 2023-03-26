@@ -8,7 +8,7 @@ keyphrases.rs is a Rapid Automatic Keyword Extraction (RAKE) algorithm implement
   - [Installation](#installation)
   - [Usage](#usage)
   - [Documentation](#documentation)
-    - [License](#license)
+  - [License](#license)
 
 ## Installation
 
@@ -42,6 +42,6 @@ keyphrases = "0.1.4"
 
 ## [Documentation](https://docs.rs/keyphrases/latest/keyphrases/struct.KeyPhraseExtractor.html)
 
-### License
+## License
 
 keyphrases.rs is licensed under the WTFPL License. See the [LICENSE](https://github.com/jjoeldaniel/keyphrases.rs/blob/main/LICENSE) file for more details.
