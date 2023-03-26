@@ -1,6 +1,6 @@
 # keyphrases.rs
 
-[![made-with-rust](https://img.shields.io/badge/Made%20with-Rust-1f425f.svg)](https://www.rust-lang.org/) ![https://github.com/jjoeldaniel/keyphrases.rs/actions/workflows/ci.yml](https://github.com/jjoeldaniel/keyphrases.rs/actions/workflows/ci.yml/badge.svg?main)
+[![crates.io link](https://shields.io/crates/v/keyphrases)](https://crates.io/crates/keyphrases) [![documentation](https://img.shields.io/docsrs/keyphrases)](https://docs.rs/keyphrases/0.1.2/) ![https://github.com/jjoeldaniel/keyphrases.rs/actions/workflows/ci.yml](https://github.com/jjoeldaniel/keyphrases.rs/actions/workflows/ci.yml/badge.svg?main) [![license](https://img.shields.io/crates/l/keyphrases)](https://github.com/jjoeldaniel/keyphrases.rs/blob/main/LICENSE)
 
 keyphrases.rs is a Rapid Automatic Keyword Extraction (RAKE) algorithm implementation in Rust.
 
