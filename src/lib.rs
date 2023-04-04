@@ -14,7 +14,6 @@ use std::collections::HashSet;
 /// words that are one edit distance away from it.
 pub struct KeyPhraseExtractor {
     message: String,
-    content_words: Vec<String>,
     content_phrases: Vec<Vec<String>>,
     word_freq: HashMap<String, usize>,
     word_deg: HashMap<String, usize>,
@@ -64,7 +63,6 @@ impl KeyPhraseExtractor {
     ///
     /// A KeyPhraseExtractor struct
     pub fn new(str: &str) -> KeyPhraseExtractor {
-        let content_words: Vec<String> = extract_content_words(&words);
         let content_phrases: Vec<Vec<String>> = extract_content_phrases(&String::from(str));
 
         // maps
@@ -76,7 +74,6 @@ impl KeyPhraseExtractor {
 
         return KeyPhraseExtractor {
             message,
-            content_words,
             content_phrases,
             word_freq,
             word_deg,
