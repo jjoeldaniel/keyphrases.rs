@@ -233,6 +233,9 @@ fn extract_content_phrases(input: &str) -> Vec<Vec<String>> {
 
     let mut content_phrases: Vec<Vec<String>> = Vec::new();
 
+    // avoid duplicates
+    let mut stored: HashSet<Vec<String>> = HashSet::new();
+
     // Loop over sentences and then commas
     for sentence in input.split('.') {
         for phrase in sentence.split(',') {
@@ -244,6 +247,11 @@ fn extract_content_phrases(input: &str) -> Vec<Vec<String>> {
                 // If word is a stopword, push the phrase, clear, and
                 // move to the next split
                 if stopwords.contains(&word.to_ascii_lowercase()) {
+                    if stored.contains(&content_phrase) {
+                        content_phrase.clear();
+                        continue;
+                    }
+                    stored.insert(content_phrase.clone());
                     content_phrases.push(content_phrase.clone());
                     content_phrase.clear();
                     continue;
@@ -254,6 +262,11 @@ fn extract_content_phrases(input: &str) -> Vec<Vec<String>> {
                     // If current word is the last word in the phrase,
                     // push the phrase and clear
                     if i == total_words - 1 {
+                        if stored.contains(&content_phrase) {
+                            content_phrase.clear();
+                            continue;
+                        }
+                        stored.insert(content_phrase.clone());
                         content_phrases.push(content_phrase.clone());
                         content_phrase.clear();
                     }
