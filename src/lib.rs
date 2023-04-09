@@ -257,6 +257,7 @@ fn extract_content_phrases(input: &str, max_length: usize) -> Vec<Vec<String>> {
 
                     // if phrase is about to be over max length
                     if content_phrase.len() == max_length {
+                        content_phrases.push(content_phrase.clone());
                         content_phrase.clear();
                         continue;
                     } 
@@ -268,6 +269,7 @@ fn extract_content_phrases(input: &str, max_length: usize) -> Vec<Vec<String>> {
 
                     // if phrase is about to be over max length
                     if content_phrase.len() == max_length {
+                        content_phrases.push(content_phrase.clone());
                         content_phrase.clear();
                         continue;
                     } 
