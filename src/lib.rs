@@ -13,6 +13,7 @@ use std::collections::HashSet;
 /// * `word_deg`: A HashMap that maps each word to its degree. The degree of a word is the number of
 /// words that are one edit distance away from it.
 pub struct KeyPhraseExtractor {
+    top_n: usize,
     message: String,
     content_phrases: Vec<Vec<String>>,
     word_freq: HashMap<String, usize>,
@@ -62,7 +63,7 @@ impl KeyPhraseExtractor {
     /// Returns:
     ///
     /// A KeyPhraseExtractor struct
-    pub fn new(str: &str) -> KeyPhraseExtractor {
+    pub fn new(str: &str, top_n: usize) -> KeyPhraseExtractor {
         let content_phrases: Vec<Vec<String>> = extract_content_phrases(&String::from(str));
 
         // maps
@@ -73,6 +74,7 @@ impl KeyPhraseExtractor {
         let message = String::from(str);
 
         return KeyPhraseExtractor {
+            top_n,
             message,
             content_phrases,
             word_freq,
@@ -101,6 +103,11 @@ impl KeyPhraseExtractor {
 
         phrase_degree_score.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
         phrase_degree_score.dedup();
+
+        let fill: (f32, String) = (0.0, String::from(""));
+        phrase_degree_score.resize(self.top_n, fill);
+        phrase_degree_score.dedup();
+
         return phrase_degree_score;
     }
 
