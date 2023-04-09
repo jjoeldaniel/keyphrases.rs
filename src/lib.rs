@@ -13,7 +13,7 @@ use std::collections::HashSet;
 /// * `word_deg`: A HashMap that maps each word to its degree. The degree of a word is the number of
 /// words that are one edit distance away from it.
 pub struct KeyPhraseExtractor {
-    content_words: Vec<String>,
+    message: String,
     content_phrases: Vec<Vec<String>>,
     word_freq: HashMap<String, usize>,
     word_deg: HashMap<String, usize>,
@@ -63,8 +63,6 @@ impl KeyPhraseExtractor {
     ///
     /// A KeyPhraseExtractor struct
     pub fn new(str: &str) -> KeyPhraseExtractor {
-        let words: Vec<String> = extract_words(&str);
-        let content_words: Vec<String> = extract_content_words(&words);
         let content_phrases: Vec<Vec<String>> = extract_content_phrases(&String::from(str));
 
         // maps
@@ -72,9 +70,10 @@ impl KeyPhraseExtractor {
         let mut word_deg: HashMap<String, usize> = HashMap::new();
 
         KeyPhraseExtractor::initialize_maps(content_phrases.clone(), &mut word_freq, &mut word_deg);
+        let message = String::from(str);
 
         return KeyPhraseExtractor {
-            content_words,
+            message,
             content_phrases,
             word_freq,
             word_deg,
@@ -101,6 +100,7 @@ impl KeyPhraseExtractor {
         }
 
         phrase_degree_score.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
+        phrase_degree_score.dedup();
         return phrase_degree_score;
     }
 
@@ -130,7 +130,8 @@ impl KeyPhraseExtractor {
     ///
     /// A vector of strings.
     pub fn get_content_words(&self) -> Vec<String> {
-        let vec = self.content_words.to_vec();
+        let str = self.message.as_str();
+        let vec = extract_content_words(&extract_words(str));
         return vec;
     }
 
