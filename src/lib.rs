@@ -63,8 +63,8 @@ impl KeyPhraseExtractor {
     /// Returns:
     ///
     /// A KeyPhraseExtractor struct
-    pub fn new(str: &str, top_n: usize) -> KeyPhraseExtractor {
-        let content_phrases: Vec<Vec<String>> = extract_content_phrases(&String::from(str));
+    pub fn new(str: &str, top_n: usize, max_length: usize) -> KeyPhraseExtractor {
+        let content_phrases: Vec<Vec<String>> = extract_content_phrases(&String::from(str), max_length);
 
         // maps
         let mut word_freq: HashMap<String, usize> = HashMap::new();
@@ -235,7 +235,7 @@ fn extract_content_words(words: &Vec<String>) -> Vec<String> {
 /// Returns:
 ///
 /// A vector of vectors of strings.
-fn extract_content_phrases(input: &str) -> Vec<Vec<String>> {
+fn extract_content_phrases(input: &str, max_length: usize) -> Vec<Vec<String>> {
     // stopwords
     let stopwords: HashSet<String> = load_stopwords();
 
@@ -252,10 +252,24 @@ fn extract_content_phrases(input: &str) -> Vec<Vec<String>> {
                 // If word is a stopword, push the phrase, clear, and
                 // move to the next split
                 if stopwords.contains(&word.to_ascii_lowercase()) {
+
+                    // if phrase is about to be over max length
+                    if content_phrase.len() == max_length {
+                        content_phrase.clear();
+                        continue;
+                    } 
+
                     content_phrases.push(content_phrase.clone());
                     content_phrase.clear();
                     continue;
                 } else {
+
+                    // if phrase is about to be over max length
+                    if content_phrase.len() == max_length {
+                        content_phrase.clear();
+                        continue;
+                    } 
+
                     // Append the current word to the phrase
                     content_phrase.push(String::from(word.to_owned()).to_ascii_lowercase());
 
