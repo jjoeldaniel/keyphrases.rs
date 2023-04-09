@@ -104,9 +104,11 @@ impl KeyPhraseExtractor {
         phrase_degree_score.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
         phrase_degree_score.dedup();
 
-        let fill: (f32, String) = (0.0, String::from(""));
-        phrase_degree_score.resize(self.top_n, fill);
-        phrase_degree_score.dedup();
+        if phrase_degree_score.len() > self.top_n {
+            let fill: (f32, String) = (0.0, String::from(""));
+            phrase_degree_score.resize(self.top_n, fill);
+            phrase_degree_score.dedup();
+        }
 
         return phrase_degree_score;
     }
