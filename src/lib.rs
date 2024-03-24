@@ -93,8 +93,8 @@ impl KeyPhraseExtractor {
 
             // Get cumulative score
             for word in &phrase {
-                cum_score += *self.get_word_deg().get(word).unwrap() as f32
-                    / *self.get_word_freq().get(word).unwrap() as f32;
+                cum_score += *self.word_deg.get(word).unwrap() as f32
+                    / *self.word_freq.get(word).unwrap() as f32;
             }
 
             // Insert cumulative score and phrase into list
