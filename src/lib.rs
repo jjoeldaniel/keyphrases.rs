@@ -73,13 +73,13 @@ impl KeyPhraseExtractor {
         KeyPhraseExtractor::initialize_maps(content_phrases.clone(), &mut word_freq, &mut word_deg);
         let message = String::from(str);
 
-        return KeyPhraseExtractor {
+        KeyPhraseExtractor {
             top_n,
             message,
             content_phrases,
             word_freq,
             word_deg,
-        };
+        }
     }
 
     /// Returns a vector of tuples containing a cumulative degree score
@@ -110,7 +110,7 @@ impl KeyPhraseExtractor {
             phrase_degree_score.dedup();
         }
 
-        return phrase_degree_score;
+        phrase_degree_score
     }
 
     /// Returns a copy of the word_freq HashMap.
@@ -119,8 +119,7 @@ impl KeyPhraseExtractor {
     ///
     /// A clone of the word_freq HashMap.
     pub fn get_word_freq(&self) -> HashMap<String, usize> {
-        let freq = self.word_freq.clone();
-        return freq;
+        self.word_freq.clone()
     }
 
     /// Returns a copy of the word_deg HashMap.
@@ -129,8 +128,7 @@ impl KeyPhraseExtractor {
     ///
     /// A clone of the word_deg HashMap.
     pub fn get_word_deg(&self) -> HashMap<String, usize> {
-        let deg = self.word_deg.clone();
-        return deg;
+        self.word_deg.clone()
     }
 
     /// Returns a vector of all content words.
@@ -140,8 +138,7 @@ impl KeyPhraseExtractor {
     /// A vector of strings.
     pub fn get_content_words(&self) -> Vec<String> {
         let str = self.message.as_str();
-        let vec = extract_content_words(&extract_words(str));
-        return vec;
+        extract_content_words(&extract_words(str))
     }
 
     /// Returns a vector of of all content phrases
@@ -152,8 +149,7 @@ impl KeyPhraseExtractor {
     ///
     /// A vector of vectors of strings.
     pub fn get_content_phrases(&self) -> Vec<Vec<String>> {
-        let vec = self.content_phrases.to_vec();
-        return vec;
+        self.content_phrases.to_vec()
     }
 }
 
@@ -171,7 +167,7 @@ fn load_stopwords() -> HashSet<String> {
         stop_words.insert(String::from(line));
     }
 
-    return stop_words;
+    stop_words
 }
 
 /// Extracts all individual words of a input &str and returns
@@ -191,8 +187,7 @@ fn extract_words(input: &str) -> Vec<String> {
     // Mutable string vector of ALL words
     let mut content_words: Vec<String> = Vec::new();
     content_words.extend(re.find_iter(input).map(|m| m.as_str().to_string()));
-
-    return content_words;
+    content_words
 }
 
 /// Takes a vector of all words passed into KeyPhraseExtractor constructor,
@@ -221,7 +216,7 @@ fn extract_content_words(words: &Vec<String>) -> Vec<String> {
         }
     }
 
-    return content_words;
+    content_words
 }
 
 /// Splits an input string into sentences, then splits each sentence into phrases, then splits each
@@ -275,5 +270,5 @@ fn extract_content_phrases(input: &str) -> Vec<Vec<String>> {
     // Remove any empty vectors
     content_phrases.retain(|inner_vec| !inner_vec.is_empty());
 
-    return content_phrases;
+    content_phrases
 }
