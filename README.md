@@ -16,7 +16,7 @@ To use keyphrases.rs in your Rust project, add the following line to your Cargo.
 
 ```toml
 [dependencies]
-keyphrases = "0.3.2"
+keyphrases = "0.3.3"
 ```
 
 ## Usage
